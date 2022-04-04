@@ -1,86 +1,36 @@
 package edu.profound;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+
 
 public class Test {
+	
+	public static void main(String []args)
+	{
+		
 
+	Configuration cfg=new Configuration().configure();
 	
-	Session session;
-	Transaction transaction;
+	SessionFactory factory=cfg.buildSessionFactory();
 	
-	public Test()
-	{
-		session=new AnnotationConfiguration().configure().buildSessionFactory().openSession();
-	}
+	Session session=factory.openSession();
 	
-	public void insert()
-	{
-		transaction=session.beginTransaction();
-		
-		Author a1=new Author("Ankit","Maths");
-		
-		session.persist(a1);
-		
-		transaction.commit();
-	}
-	public void delete()
-	{
-		
-		transaction=session.beginTransaction();
-		
-		Author a1=new Author();
-		
-		a1.setAid(2);
-
-		session.delete(a1);
-		
-		transaction.commit();
-	}
-	public void update()
-	{
-		transaction=session.beginTransaction();
-		
-		Author a1=new Author("ddefe","Amravatii");
-		
-		a1.setAid(5);
-		
-		session.update(a1);
-		
-		transaction.commit();
-	}
-	public void select()
-	{
-		transaction=session.beginTransaction();
-		
-		Criteria criteria=session.createCriteria(Author.class);
-		
-		List<Author>alist=criteria.list();
-		
-		for(Author a1:alist)
-		{
-			System.out.println(a1.getAid()+"\t"+a1.getAname()+"\t"+a1.getAddress());
-		}
-		
-		transaction.commit();
-	}
+	Transaction transaction=session.beginTransaction();
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-		Test t1=new Test();
-		
-	//	t1.insert();
-		
-	//	t1.delete();
-		
-	//	t1.update();
+	Book b1=new Book("abc","Maths", 444);
 	
-		t1.select();
-	}
+	session.save(b1);
+	
+	transaction.commit();
+	
+	session.close();
+	
+	System.out.println("Success");
+}
 
 }
+
+
